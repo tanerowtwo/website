@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Данил Калташев — Режиссёр монтажа</title>
-<meta name="description" content="Портфолио режиссёра монтажа. Реклама, клипы, документальное кино.">
 <link rel="icon" type="image/png" href="favicon.png">
 
 <style>
@@ -146,9 +145,30 @@
 
   .tabs-container {
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
     font-size: 0.875rem;
     margin-bottom: 2rem; /* mb-12 */
+  }
+
+  .tabs-group {
+    display: flex;
+    align-items: center;
+  }
+
+  .backup-link {
+    color: #71717a;
+    white-space: nowrap;
+    font-size: 0.8125rem;
+  }
+
+  @media (min-width: 640px) {
+    .tabs-container {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+    }
   }
 
   .tab-btn {
@@ -338,12 +358,15 @@
 
   <main id="works" class="works-section">
     <div class="tabs-container">
-      <button id="tab-horizontal" class="tab-btn active" aria-pressed="true">
-        Горизонтальные
-      </button>
-      <button id="tab-vertical" class="tab-btn inactive" aria-pressed="false">
-        Вертикальные
-      </button>
+      <div class="tabs-group">
+        <button id="tab-horizontal" class="tab-btn active" aria-pressed="true">
+          Горизонтальные
+        </button>
+        <button id="tab-vertical" class="tab-btn inactive" aria-pressed="false">
+          Вертикальные
+        </button>
+      </div>
+      <a href="https://disk.yandex.ru/d/zg1qR15mQmJMjA" target="_blank" rel="noopener" class="nav-link backup-link">Портфолио на Я.Диске</a>
     </div>
 
     <div id="grid-horizontal" class="grid-horizontal">
