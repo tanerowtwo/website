@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Данил Калташев — Режиссёр монтажа</title>
+<title>Данил Калташев</title>
 <link rel="icon" type="image/png" href="favicon.png">
 
 <style>
@@ -57,10 +57,10 @@
     left: 0;
     right: 0;
     z-index: 50;
-    border-bottom: 1px solid #18181b; /* zinc-900 */
-    background-color: rgba(9, 9, 11, 0.8);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    background-color: rgba(12, 12, 14, 0.75);
+    backdrop-filter: blur(16px) saturate(140%);
+    -webkit-backdrop-filter: blur(16px) saturate(140%);
   }
 
   .header-container {
@@ -84,15 +84,16 @@
   .logo-name {
     display: block;
     font-size: 0.875rem; /* text-sm */
-    font-weight: 500;
-    letter-spacing: -0.025em; /* tracking-tight */
+    font-weight: 600;
+    letter-spacing: -0.01em;
   }
 
   .logo-title {
     display: block;
-    font-size: 11px;
-    letter-spacing: 0.1em; /* tracking-widest */
+    font-size: 10.5px;
+    letter-spacing: 0.12em; /* tracking-widest */
     color: #71717a; /* zinc-500 */
+    margin-top: 0.125rem;
   }
 
   .nav-menu {
@@ -101,6 +102,26 @@
     gap: 1.5rem;
     font-size: 0.875rem;
     color: #a1a1aa; /* zinc-400 */
+    position: relative;
+  }
+
+  /* В хедере подчёркивание отдельных ссылок отключаем — вместо него общий индикатор */
+  .nav-menu .nav-link::after {
+    display: none;
+  }
+
+  .nav-indicator {
+    position: absolute;
+    bottom: -8px;
+    left: 0;
+    height: 1px;
+    width: 0;
+    background: #f4f4f5; /* zinc-100 */
+    opacity: 0;
+    transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                width 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                opacity 0.2s ease;
+    pointer-events: none;
   }
 
   .nav-link {
@@ -134,12 +155,12 @@
   .works-section {
     max-width: 84rem;
     margin: 0 auto;
-    padding: 6rem 1.5rem 3rem 1.5rem; /* pt-32 pb-20 */
+    padding: 5rem 1.5rem 2.5rem 1.5rem; /* pt-32 pb-20 */
   }
 
   @media (min-width: 768px) {
     .works-section {
-      padding: 7.5rem 2.5rem 4.5rem 2.5rem; /* md:pt-40 md:pb-28 */
+      padding: 6rem 2.5rem 3.5rem 2.5rem; /* md:pt-40 md:pb-28 */
     }
   }
 
@@ -149,13 +170,17 @@
     align-items: flex-start;
     gap: 0.75rem;
     font-size: 0.875rem;
-    margin-bottom: 2rem; /* mb-12 */
+    margin-bottom: 1.5rem; /* mb-12 */
   }
 
   .tabs-group {
+    position: relative;
     display: flex;
     align-items: center;
+    gap: 1.25rem;
   }
+
+
 
   .backup-link {
     color: #71717a;
@@ -172,25 +197,41 @@
   }
 
   .tab-btn {
+    position: relative;
+    z-index: 1;
     padding: 0.5rem 0;
-    margin-right: 1.5rem; /* mr-6 */
-    transition: color 0.2s ease;
+    transition: color 0.3s ease;
   }
 
-  .tab-btn.active { color: #f4f4f5; }
-  .tab-btn.inactive { color: #71717a; }
+  .tab-btn.active { color: #f4f4f5; } /* zinc-100 */
+  .tab-btn.inactive { color: #71717a; } /* zinc-500 */
+  .tab-btn.inactive:hover { color: #a1a1aa; }
 
   /* СЕТКИ ДЛЯ ВИДЕО (GRIDS) */
   .grid-hidden {
     display: none !important;
   }
 
+  .grid-horizontal,
+  .grid-vertical {
+    transition: opacity 0.12s ease;
+    opacity: 1;
+  }
+
+  .grid-leaving {
+    opacity: 0 !important;
+  }
+
+  .grid-entering {
+    opacity: 0 !important;
+  }
+
   /* Горизонтальная сетка (1 колонка на мобилках, 2 на десктопе) */
   .grid-horizontal {
     display: grid;
     grid-template-columns: 1fr;
-    column-gap: 1.5rem;
-    row-gap: 2rem;
+    column-gap: 1.25rem;
+    row-gap: 1.5rem;
   }
 
   @media (min-width: 768px) {
@@ -203,8 +244,8 @@
   .grid-vertical {
     display: grid;
     grid-template-columns: 1fr;
-    column-gap: 1rem;
-    row-gap: 1.75rem;
+    column-gap: 0.875rem;
+    row-gap: 1.25rem;
   }
 
   @media (min-width: 768px) {
@@ -264,13 +305,25 @@
   .site-footer {
     max-width: 84rem;
     margin: 0 auto;
-    padding: 3.5rem 1.5rem;
-    border-top: 1px solid #18181b;
+    padding: 2.5rem 1.5rem;
   }
 
   @media (min-width: 768px) {
     .site-footer {
-      padding: 4.5rem 2.5rem;
+      padding: 3.5rem 2.5rem;
+    }
+  }
+
+  /* Разделитель — отдельный элемент внутри паддинга, поэтому совпадает по ширине с сеткой видео и навигацией, а не с внешним краем секции */
+  .footer-divider {
+    height: 1px;
+    background: rgba(255, 255, 255, 0.06);
+    margin-bottom: 2.5rem;
+  }
+
+  @media (min-width: 768px) {
+    .footer-divider {
+      margin-bottom: 3rem;
     }
   }
 
@@ -278,14 +331,15 @@
     font-size: 0.75rem;
     letter-spacing: 0.1em;
     color: #71717a;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.25rem;
     font-weight: 500;
   }
 
   .contacts-links {
     display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.5rem 2.5rem;
     font-size: 1.125rem; /* text-lg */
   }
 
@@ -300,8 +354,8 @@
   }
 
   .footer-bottom {
-    margin-top: 3rem;
-    padding-top: 1.5rem;
+    margin-top: 2rem;
+    padding-top: 1.25rem;
     border-top: 1px solid #18181b;
     display: flex;
     flex-direction: column;
@@ -345,13 +399,14 @@
 
   <header class="site-header">
     <div class="header-container">
-      <a href="#" class="logo">
+      <a href="javascript:void(0)" class="logo" data-scroll-target="top">
         <span class="logo-name">Данил Калташев</span>
         <span class="logo-title">// РЕЖИССЁР МОНТАЖА</span>
       </a>
       <nav class="nav-menu">
-        <a href="#works" class="nav-link">Работы</a>
-        <a href="#contacts" class="nav-link">Контакты</a>
+        <a href="javascript:void(0)" class="nav-link" data-scroll-target="works">Работы</a>
+        <a href="javascript:void(0)" class="nav-link" data-scroll-target="contacts">Контакты</a>
+        <span class="nav-indicator" aria-hidden="true"></span>
       </nav>
     </div>
   </header>
@@ -556,6 +611,7 @@
   </main>
 
   <footer id="contacts" class="site-footer">
+    <div class="footer-divider"></div>
     <h2 class="footer-title">КОНТАКТЫ</h2>
 
     <div class="contacts-links">
@@ -578,9 +634,36 @@
 
     const worksSection = document.getElementById('works');
 
+    let isSwitching = false;
+
+    function switchGrid(showEl, hideEl) {
+      if (isSwitching) return;
+      isSwitching = true;
+
+      hideEl.classList.add('grid-leaving');
+
+      setTimeout(() => {
+        hideEl.classList.add('grid-hidden');
+        hideEl.classList.remove('grid-leaving');
+
+        showEl.classList.remove('grid-hidden');
+        showEl.classList.add('grid-entering');
+
+        void showEl.offsetWidth; // форсируем перерасчёт стилей
+
+        requestAnimationFrame(() => {
+          showEl.classList.remove('grid-entering');
+          isSwitching = false;
+        });
+
+        checkReveal();
+      }, 120);
+    }
+
     function showHorizontal() {
-      gridHorizontal.classList.remove('grid-hidden');
-      gridVertical.classList.add('grid-hidden');
+      if (tabHorizontal.classList.contains('active')) return;
+
+      switchGrid(gridHorizontal, gridVertical);
 
       tabHorizontal.classList.add('active');
       tabHorizontal.classList.remove('inactive');
@@ -589,14 +672,12 @@
 
       tabHorizontal.setAttribute('aria-pressed', 'true');
       tabVertical.setAttribute('aria-pressed', 'false');
-      
-      // Перезапуск триггера анимаций для появившихся карточек
-      checkReveal();
     }
 
     function showVertical() {
-      gridVertical.classList.remove('grid-hidden');
-      gridHorizontal.classList.add('grid-hidden');
+      if (tabVertical.classList.contains('active')) return;
+
+      switchGrid(gridVertical, gridHorizontal);
 
       tabVertical.classList.add('active');
       tabVertical.classList.remove('inactive');
@@ -605,12 +686,45 @@
 
       tabVertical.setAttribute('aria-pressed', 'true');
       tabHorizontal.setAttribute('aria-pressed', 'false');
-      
-      checkReveal();
     }
 
     tabHorizontal.addEventListener('click', showHorizontal);
     tabVertical.addEventListener('click', showVertical);
+
+    // Плавающее подчёркивание в хедере — скользит между "Работы" и "Контакты"
+    const navMenu = document.querySelector('.nav-menu');
+    const navIndicator = document.querySelector('.nav-indicator');
+    const navLinks = navMenu.querySelectorAll('.nav-link');
+
+    function moveIndicatorTo(el) {
+      const menuRect = navMenu.getBoundingClientRect();
+      const elRect = el.getBoundingClientRect();
+      navIndicator.style.left = (elRect.left - menuRect.left) + 'px';
+      navIndicator.style.width = elRect.width + 'px';
+      navIndicator.style.opacity = '1';
+    }
+
+    navLinks.forEach(link => {
+      link.addEventListener('mouseenter', () => moveIndicatorTo(link));
+    });
+
+    navMenu.addEventListener('mouseleave', () => {
+      navIndicator.style.opacity = '0';
+    });
+
+    // Плавный скролл по клику на лого/навигацию без изменения URL
+    document.querySelectorAll('[data-scroll-target]').forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const targetId = link.getAttribute('data-scroll-target');
+        if (targetId === 'top') {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        } else {
+          const target = document.getElementById(targetId);
+          if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
 
     // Появление карточек при скролле
     const revealObserver = new IntersectionObserver((entries) => {
