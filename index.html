@@ -155,12 +155,12 @@
   .works-section {
     max-width: 84rem;
     margin: 0 auto;
-    padding: 5rem 1.5rem 2.5rem 1.5rem; /* pt-32 pb-20 */
+    padding: 5rem 1.5rem 1.5rem 1.5rem; /* pt-32 pb-20 */
   }
 
   @media (min-width: 768px) {
     .works-section {
-      padding: 6rem 2.5rem 3.5rem 2.5rem; /* md:pt-40 md:pb-28 */
+      padding: 6rem 2.5rem 2rem 2.5rem; /* md:pt-40 md:pb-28 */
     }
   }
 
@@ -240,7 +240,7 @@
     }
   }
 
-  /* Вертикальная сетка (1 колонка на мобилках, 4 на десктопе) */
+  /* Вертикальная сетка: 1 колонка на телефонах, 2 на средних экранах, 4 на десктопе */
   .grid-vertical {
     display: grid;
     grid-template-columns: 1fr;
@@ -248,7 +248,13 @@
     row-gap: 1.25rem;
   }
 
-  @media (min-width: 768px) {
+  @media (min-width: 640px) {
+    .grid-vertical {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
     .grid-vertical {
       grid-template-columns: repeat(4, 1fr);
     }
@@ -305,12 +311,12 @@
   .site-footer {
     max-width: 84rem;
     margin: 0 auto;
-    padding: 2.5rem 1.5rem;
+    padding: 1.5rem 1.5rem 2.5rem 1.5rem;
   }
 
   @media (min-width: 768px) {
     .site-footer {
-      padding: 3.5rem 2.5rem;
+      padding: 2rem 2.5rem 3.5rem 2.5rem;
     }
   }
 
@@ -318,12 +324,12 @@
   .footer-divider {
     height: 1px;
     background: rgba(255, 255, 255, 0.06);
-    margin-bottom: 2.5rem;
+    margin-bottom: 1.5rem;
   }
 
   @media (min-width: 768px) {
     .footer-divider {
-      margin-bottom: 3rem;
+      margin-bottom: 2rem;
     }
   }
 
