@@ -7,753 +7,859 @@
 <link rel="icon" type="image/png" href="favicon.png">
 
 <style>
-  /* БАЗОВЫЕ НАСТРОЙКИ И СБРОС СТИЛЕЙ */
-  * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-  }
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 
-  html { 
-    scroll-behavior: smooth; 
-  }
+html { scroll-behavior: smooth; }
 
-  body { 
-    background-color: #09090b; /* zinc-950 */
-    color: #f4f4f5; /* zinc-100 */
-    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Inter', 'Segoe UI', sans-serif;
-    -webkit-font-smoothing: antialiased;
-    min-height: 100vh;
-    line-height: 1.5;
-  }
+body {
+  background-color: #09090b;
+  color: #f4f4f5;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Inter', 'Segoe UI', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+  line-height: 1.5;
+}
 
-  ::selection { 
-    background: #e4e4e7; /* zinc-200 */
-    color: #09090b; 
-  }
+::selection {
+  background: #e4e4e7;
+  color: #09090b;
+}
 
-  a {
-    color: inherit;
-    text-decoration: none;
-  }
+a {
+  color: inherit;
+  text-decoration: none;
+}
 
-  button {
-    background: none;
-    border: none;
-    color: inherit;
-    font: inherit;
-    cursor: pointer;
-  }
+button {
+  background: none;
+  border: none;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
 
-  a:focus-visible, button:focus-visible {
-    outline: 1px solid #e4e4e7;
-    outline-offset: 4px;
-  }
+a:focus-visible,
+button:focus-visible {
+  outline: 1px solid #e4e4e7;
+  outline-offset: 4px;
+}
 
-  /* ХЕДЕР (HEADER) */
-  .site-header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 50;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-    background-color: rgba(12, 12, 14, 0.75);
-    backdrop-filter: blur(16px) saturate(140%);
-    -webkit-backdrop-filter: blur(16px) saturate(140%);
-  }
+/* ХЕДЕР */
+.site-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  background-color: rgba(12,12,14,0.75);
+  backdrop-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+}
 
-  .header-container {
-    max-width: 84rem; /* max-w-6xl → шире, чтобы карточки были крупнее */
-    margin: 0 auto;
-    padding: 0 1.5rem;
-    height: 4rem; /* h-16 */
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
+.header-container {
+  max-width: 84rem;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+  height: 4rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
 
-  @media (min-width: 768px) {
-    .header-container { padding: 0 2.5rem; }
-  }
+.logo { line-height: 1.25; }
 
-  .logo {
-    line-height: 1.25;
-  }
+.logo-name {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
 
-  .logo-name {
-    display: block;
-    font-size: 0.875rem; /* text-sm */
-    font-weight: 600;
-    letter-spacing: -0.01em;
-  }
+.logo-title {
+  display: block;
+  font-size: 10.5px;
+  letter-spacing: 0.12em;
+  color: #71717a;
+  margin-top: 0.125rem;
+}
 
-  .logo-title {
-    display: block;
-    font-size: 10.5px;
-    letter-spacing: 0.12em; /* tracking-widest */
-    color: #71717a; /* zinc-500 */
-    margin-top: 0.125rem;
-  }
+.nav-menu {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  font-size: 0.875rem;
+  color: #a1a1aa;
+  position: relative;
+}
 
-  .nav-menu {
-    display: flex;
-    align-items: center;
-    gap: 1.5rem;
-    font-size: 0.875rem;
-    color: #a1a1aa; /* zinc-400 */
-    position: relative;
-  }
+.nav-menu .nav-link::after { display: none; }
 
-  /* В хедере подчёркивание отдельных ссылок отключаем — вместо него общий индикатор */
-  .nav-menu .nav-link::after {
-    display: none;
-  }
+.nav-indicator {
+  position: absolute;
+  bottom: -8px;
+  left: 0;
+  height: 1px;
+  width: 0;
+  background: #f4f4f5;
+  opacity: 0;
+  transition:
+    left 0.3s cubic-bezier(0.4,0,0.2,1),
+    width 0.3s cubic-bezier(0.4,0,0.2,1),
+    opacity 0.2s ease;
+  pointer-events: none;
+}
 
-  .nav-indicator {
-    position: absolute;
-    bottom: -8px;
-    left: 0;
-    height: 1px;
-    width: 0;
-    background: #f4f4f5; /* zinc-100 */
-    opacity: 0;
-    transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-                width 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-                opacity 0.2s ease;
-    pointer-events: none;
-  }
+.nav-link {
+  position: relative;
+  transition: color 0.2s ease;
+}
 
-  .nav-link {
-    position: relative;
-    transition: color 0.2s ease;
-  }
+.nav-link:hover { color: #f4f4f5; }
 
-  .nav-link:hover {
-    color: #f4f4f5;
-  }
+.nav-link::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 100%;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.25s ease;
+}
 
-  .nav-link::after {
-    content: '';
-    position: absolute;
-    left: 0;
-    bottom: -2px;
-    width: 100%;
-    height: 1px;
-    background: currentColor;
-    transform: scaleX(0);
-    transform-origin: right;
-    transition: transform 0.25s ease;
-  }
+.nav-link:hover::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
 
-  .nav-link:hover::after {
-    transform: scaleX(1);
-    transform-origin: left;
-  }
+/* СЕКЦИЯ РАБОТ */
+.works-section {
+  max-width: 84rem;
+  margin: 0 auto;
+  padding: 5rem 1.5rem 1.5rem;
+}
 
-  /* СЕКЦИЯ РАБОТ (WORKS) */
-  .works-section {
-    max-width: 84rem;
-    margin: 0 auto;
-    padding: 5rem 1.5rem 1.5rem 1.5rem; /* pt-32 pb-20 */
-  }
+.tabs-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.75rem;
+  font-size: 0.875rem;
+  margin-bottom: 1.5rem;
+}
 
-  @media (min-width: 768px) {
-    .works-section {
-      padding: 6rem 2.5rem 2rem 2.5rem; /* md:pt-40 md:pb-28 */
-    }
-  }
+.tabs-group {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+}
 
+.backup-link {
+  color: #71717a;
+  white-space: nowrap;
+  font-size: 0.8125rem;
+}
+
+.tab-btn {
+  position: relative;
+  z-index: 1;
+  padding: 0.5rem 0;
+  transition: color 0.3s ease;
+}
+
+.tab-btn.active { color: #f4f4f5; }
+.tab-btn.inactive { color: #71717a; }
+.tab-btn.inactive:hover { color: #a1a1aa; }
+
+/* СЕТКИ */
+.grid-hidden { display: none !important; }
+
+.grid-horizontal,
+.grid-vertical {
+  transition: opacity 0.12s ease;
+  opacity: 1;
+}
+
+.grid-leaving { opacity: 0 !important; }
+.grid-entering { opacity: 0 !important; }
+
+.grid-horizontal {
+  display: grid;
+  grid-template-columns: 1fr;
+  column-gap: 1.25rem;
+  row-gap: 1.5rem;
+}
+
+.grid-vertical {
+  display: grid;
+  grid-template-columns: 1fr;
+  column-gap: 0.875rem;
+  row-gap: 1.25rem;
+}
+
+/* ФРЕЙМЫ ВИДЕО */
+figure { display: block; }
+
+.video-frame {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  background: #18181b;
+  border-radius: 0.5rem;
+  cursor: pointer;
+}
+
+.video-frame .video-poster {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scale(1);
+  transition: transform 1.1s cubic-bezier(0.22,1,0.36,1);
+  will-change: transform;
+}
+
+.video-frame::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0);
+  transition: background 0.8s ease;
+  pointer-events: none;
+}
+
+.video-frame:hover .video-poster { transform: scale(1.025); }
+.video-frame:hover::after { background: rgba(0,0,0,0.12); }
+
+/* PLAY */
+.video-play {
+  position: absolute;
+  z-index: 2;
+  left: 50%;
+  top: 50%;
+  width: 52px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transform: translate(-50%,-50%) scale(0.82);
+  filter: drop-shadow(0 2px 8px rgba(0,0,0,0.28));
+  transition:
+    opacity 0.45s ease,
+    transform 0.65s cubic-bezier(0.22,1,0.36,1);
+  pointer-events: none;
+}
+
+.video-play svg {
+  width: 44px;
+  height: 44px;
+  fill: rgba(255,255,255,0.83);
+}
+
+.video-frame:hover .video-play {
+  opacity: 1;
+  transform: translate(-50%,-50%) scale(1);
+}
+
+.video-frame.is-playing { cursor: default; }
+
+.video-frame.is-playing .video-poster,
+.video-frame.is-playing .video-play {
+  display: none;
+}
+
+.video-frame iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.ratio-16-9 {
+  position: relative;
+  padding-top: 56.25%;
+  width: 100%;
+}
+
+.ratio-9-16 {
+  position: relative;
+  padding-top: 177.78%;
+  width: 100%;
+}
+
+.video-caption {
+  margin-top: 0.75rem;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  font-size: 0.75rem;
+  color: #71717a;
+  letter-spacing: -0.025em;
+}
+
+/* ФУТЕР */
+.site-footer {
+  max-width: 84rem;
+  margin: 0 auto;
+  padding: 1.5rem 1.5rem 2.5rem;
+}
+
+.footer-divider {
+  height: 1px;
+  background: rgba(255,255,255,0.06);
+  margin-bottom: 1.5rem;
+}
+
+.footer-title {
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  color: #71717a;
+  margin-bottom: 1.25rem;
+  font-weight: 500;
+}
+
+.contacts-links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.5rem 2.5rem;
+  font-size: 1.125rem;
+}
+
+.contacts-links .nav-link {
+  color: #d4d4d8;
+  display: inline-block;
+  width: fit-content;
+}
+
+.contacts-links .nav-link:hover { color: #f4f4f5; }
+
+.footer-bottom {
+  margin-top: 2rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid #18181b;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  color: #52525b;
+  letter-spacing: -0.025em;
+}
+
+/* АНИМАЦИИ */
+.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (min-width: 640px) {
   .tabs-container {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.75rem;
-    font-size: 0.875rem;
-    margin-bottom: 1.5rem; /* mb-12 */
-  }
-
-  .tabs-group {
-    position: relative;
-    display: flex;
+    flex-direction: row;
     align-items: center;
-    gap: 1.25rem;
-  }
-
-
-
-  .backup-link {
-    color: #71717a;
-    white-space: nowrap;
-    font-size: 0.8125rem;
-  }
-
-  @media (min-width: 640px) {
-    .tabs-container {
-      flex-direction: row;
-      align-items: center;
-      justify-content: space-between;
-    }
-  }
-
-  .tab-btn {
-    position: relative;
-    z-index: 1;
-    padding: 0.5rem 0;
-    transition: color 0.3s ease;
-  }
-
-  .tab-btn.active { color: #f4f4f5; } /* zinc-100 */
-  .tab-btn.inactive { color: #71717a; } /* zinc-500 */
-  .tab-btn.inactive:hover { color: #a1a1aa; }
-
-  /* СЕТКИ ДЛЯ ВИДЕО (GRIDS) */
-  .grid-hidden {
-    display: none !important;
-  }
-
-  .grid-horizontal,
-  .grid-vertical {
-    transition: opacity 0.12s ease;
-    opacity: 1;
-  }
-
-  .grid-leaving {
-    opacity: 0 !important;
-  }
-
-  .grid-entering {
-    opacity: 0 !important;
-  }
-
-  /* Горизонтальная сетка (1 колонка на мобилках, 2 на десктопе) */
-  .grid-horizontal {
-    display: grid;
-    grid-template-columns: 1fr;
-    column-gap: 1.25rem;
-    row-gap: 1.5rem;
-  }
-
-  @media (min-width: 768px) {
-    .grid-horizontal {
-      grid-template-columns: repeat(2, 1fr);
-    }
-  }
-
-  /* Вертикальная сетка: 1 колонка на телефонах, 2 на средних экранах, 4 на десктопе */
-  .grid-vertical {
-    display: grid;
-    grid-template-columns: 1fr;
-    column-gap: 0.875rem;
-    row-gap: 1.25rem;
-  }
-
-  @media (min-width: 640px) {
-    .grid-vertical {
-      grid-template-columns: repeat(2, 1fr);
-    }
-  }
-
-  @media (min-width: 1024px) {
-    .grid-vertical {
-      grid-template-columns: repeat(4, 1fr);
-    }
-  }
-
-  /* ФРЕЙМЫ ВИДЕО */
-  figure {
-    display: block;
-  }
-
-  .video-frame {
-    position: relative;
-    width: 100%;
-    overflow: hidden;
-    background: #18181b; /* zinc-900 */
-    border-radius: 0.5rem; /* rounded-lg */
-    transition: opacity 0.3s ease;
-  }
-
-  figure:hover .video-frame {
-    opacity: 0.9;
-  }
-
-  .video-frame iframe {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    border: 0;
-  }
-
-  .ratio-16-9 { 
-    position: relative;
-    padding-top: 56.25%; /* Это дает идеальные 16:9 */
-    width: 100%;
-  }
-  .ratio-9-16 { 
-    position: relative;
-    padding-top: 177.78%; /* Это дает идеальные 9:16 под вертикалки */
-    width: 100%;
-  }
-
-  .video-caption {
-    margin-top: 0.75rem;
-    display: flex;
-    align-items: baseline;
     justify-content: space-between;
-    font-size: 0.75rem; /* text-xs */
-    color: #71717a; /* zinc-500 */
-    letter-spacing: -0.025em; /* tracking-tight */
   }
 
-  /* КОНТАКТЫ И ФУТЕР (CONTACTS / FOOTER) */
-  .site-footer {
-    max-width: 84rem;
-    margin: 0 auto;
-    padding: 1.5rem 1.5rem 2.5rem 1.5rem;
-  }
-
-  @media (min-width: 768px) {
-    .site-footer {
-      padding: 2rem 2.5rem 3.5rem 2.5rem;
-    }
-  }
-
-  /* Разделитель — отдельный элемент внутри паддинга, поэтому совпадает по ширине с сеткой видео и навигацией, а не с внешним краем секции */
-  .footer-divider {
-    height: 1px;
-    background: rgba(255, 255, 255, 0.06);
-    margin-bottom: 1.5rem;
-  }
-
-  @media (min-width: 768px) {
-    .footer-divider {
-      margin-bottom: 2rem;
-    }
-  }
-
-  .footer-title {
-    font-size: 0.75rem;
-    letter-spacing: 0.1em;
-    color: #71717a;
-    margin-bottom: 1.25rem;
-    font-weight: 500;
-  }
-
-  .contacts-links {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: baseline;
-    gap: 0.5rem 2.5rem;
-    font-size: 1.125rem; /* text-lg */
-  }
-
-  .contacts-links .nav-link {
-    color: #d4d4d8; /* zinc-300 */
-    display: inline-block;
-    width: fit-content;
-  }
-
-  .contacts-links .nav-link:hover {
-    color: #f4f4f5;
+  .grid-vertical {
+    grid-template-columns: repeat(2,1fr);
   }
 
   .footer-bottom {
-    margin-top: 2rem;
-    padding-top: 1.25rem;
-    border-top: 1px solid #18181b;
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    font-size: 0.75rem;
-    color: #52525b; /* zinc-600 */
-    letter-spacing: -0.025em;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
+
+@media (min-width: 768px) {
+  .header-container {
+    padding: 0 2.5rem;
   }
 
-  @media (min-width: 640px) {
-    .footer-bottom {
-      flex-direction: row;
-      justify-content: space-between;
-      align-items: center;
-    }
+  .works-section {
+    padding: 6rem 2.5rem 2rem;
   }
 
-  /* АНИМАЦИИ */
-  .reveal {
-    opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 0.6s ease, transform 0.6s ease;
+  .grid-horizontal {
+    grid-template-columns: repeat(2,1fr);
   }
 
-  .reveal.is-visible {
+  .site-footer {
+    padding: 2rem 2.5rem 3.5rem;
+  }
+
+  .footer-divider {
+    margin-bottom: 2rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .grid-vertical {
+    grid-template-columns: repeat(4,1fr);
+  }
+}
+
+@media (hover: none) {
+  .video-play {
     opacity: 1;
-    transform: translateY(0);
+    transform: translate(-50%,-50%) scale(1);
   }
 
-  @media (prefers-reduced-motion: reduce) {
-    .reveal {
-      opacity: 1 !important;
-      transform: none !important;
-      transition: none !important;
-    }
+  .video-frame::after {
+    background: rgba(0,0,0,0.05);
   }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .video-frame .video-poster,
+  .video-frame::after,
+  .video-play {
+    transition: none;
+  }
+
+  .reveal {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
 </style>
 </head>
 
 <body>
 
-  <header class="site-header">
-    <div class="header-container">
-      <a href="javascript:void(0)" class="logo" data-scroll-target="top">
-        <span class="logo-name">Данил Калташев</span>
-        <span class="logo-title">// РЕЖИССЁР МОНТАЖА</span>
-      </a>
-      <nav class="nav-menu">
-        <a href="Danil_Kaltashev_Editor_CV.pdf" target="_blank" rel="noopener" class="nav-link" style="opacity: 0.65;">CV</a>
-        <a href="javascript:void(0)" class="nav-link" data-scroll-target="works">Работы</a>
-        <a href="javascript:void(0)" class="nav-link" data-scroll-target="contacts">Контакты</a>
-        <span class="nav-indicator" aria-hidden="true"></span>
-      </nav>
-    </div>
-  </header>
+<header class="site-header">
+  <div class="header-container">
+    <a href="javascript:void(0)" class="logo" data-scroll-target="top">
+      <span class="logo-name">Данил Калташев</span>
+      <span class="logo-title">// РЕЖИССЁР МОНТАЖА</span>
+    </a>
 
-  <main id="works" class="works-section">
-    <div class="tabs-container">
-      <div class="tabs-group">
-        <button id="tab-horizontal" class="tab-btn active" aria-pressed="true">
-          Горизонтальные
-        </button>
-        <button id="tab-vertical" class="tab-btn inactive" aria-pressed="false">
-          Вертикальные
-        </button>
+    <nav class="nav-menu">
+      <a href="Danil_Kaltashev_Editor_CV.pdf" target="_blank" rel="noopener"
+         class="nav-link" style="opacity:0.65;">CV</a>
+      <a href="javascript:void(0)" class="nav-link" data-scroll-target="works">Работы</a>
+      <a href="javascript:void(0)" class="nav-link" data-scroll-target="contacts">Контакты</a>
+      <span class="nav-indicator" aria-hidden="true"></span>
+    </nav>
+  </div>
+</header>
+
+<main id="works" class="works-section">
+
+  <div class="tabs-container">
+    <div class="tabs-group">
+      <button id="tab-horizontal" class="tab-btn active" aria-pressed="true">
+        Горизонтальные
+      </button>
+      <button id="tab-vertical" class="tab-btn inactive" aria-pressed="false">
+        Вертикальные
+      </button>
+    </div>
+
+    <a href="https://disk.yandex.ru/d/zg1qR15mQmJMjA"
+       target="_blank" rel="noopener" class="nav-link backup-link">
+      Портфолио на Я.Диске
+    </a>
+  </div>
+
+  <!-- ГОРИЗОНТАЛЬНЫЕ -->
+  <div id="grid-horizontal" class="grid-horizontal">
+
+    <figure class="reveal">
+      <div class="video-frame" style="padding-top:56.25%;"
+           data-video-src="https://kinescope.io/embed/iH9UN3zrRKGeSQS6Abgcuu"
+           data-poster="previews/uniqom.jpg.jpg"
+           role="button" tabindex="0" aria-label="Воспроизвести видео">
+        <img class="video-poster" src="previews/uniqom.jpg.jpg"
+             alt="" loading="lazy" draggable="false">
+        <span class="video-play" aria-hidden="true">
+          <svg viewBox="0 0 24 24">
+            <path d="M8.2 5.7c0-.9 1-1.45 1.8-.95l9.1 5.3c.8.47.8 1.62 0 2.1L10 17.45c-.8.5-1.8-.08-1.8-.95V5.7z"/>
+          </svg>
+        </span>
       </div>
-      <a href="https://disk.yandex.ru/d/zg1qR15mQmJMjA" target="_blank" rel="noopener" class="nav-link backup-link">Портфолио на Я.Диске</a>
-    </div>
+      <figcaption class="video-caption">
+        <span>Имидживый ролик для UNIQOM</span><span>2025</span>
+      </figcaption>
+    </figure>
 
-    <div id="grid-horizontal" class="grid-horizontal">
+    <figure class="reveal">
+      <div class="video-frame" style="padding-top:56.25%;"
+           data-video-src="https://kinescope.io/embed/8MUabsTDUpCE8xs35a9SPG"
+           data-poster="previews/imarussia_invitro-poster.jpg"
+           role="button" tabindex="0" aria-label="Воспроизвести видео">
+        <img class="video-poster" src="previews/imarussia_invitro-poster.jpg"
+             alt="" loading="lazy" draggable="false">
+        <span class="video-play" aria-hidden="true">
+          <svg viewBox="0 0 24 24">
+            <path d="M8.2 5.7c0-.9 1-1.45 1.8-.95l9.1 5.3c.8.47.8 1.62 0 2.1L10 17.45c-.8.5-1.8-.08-1.8-.95V5.7z"/>
+          </svg>
+        </span>
+      </div>
+      <figcaption class="video-caption">
+        <span>Отчетник для IMARUSSIA x INVITRO</span><span>2026</span>
+      </figcaption>
+    </figure>
 
+    <figure class="reveal">
+      <div class="video-frame" style="padding-top:56.25%;"
+           data-video-src="https://kinescope.io/embed/aeq4JN5dPnJJxs23J1JV1F"
+           data-poster="previews/04_замедление_мой_фильм-poster.jpg"
+           role="button" tabindex="0" aria-label="Воспроизвести видео">
+        <img class="video-poster"
+             src="previews/04_замедление_мой_фильм-poster.jpg"
+             alt="" loading="lazy" draggable="false">
+        <span class="video-play" aria-hidden="true">
+          <svg viewBox="0 0 24 24">
+            <path d="M8.2 5.7c0-.9 1-1.45 1.8-.95l9.1 5.3c.8.47.8 1.62 0 2.1L10 17.45c-.8.5-1.8-.08-1.8-.95V5.7z"/>
+          </svg>
+        </span>
+      </div>
+      <figcaption class="video-caption">
+        <span>Короткометражный фильм "Замедление"</span><span>2024</span>
+      </figcaption>
+    </figure>
 
+    <figure class="reveal">
+      <div class="video-frame" style="padding-top:56.25%;"
+           data-video-src="https://kinescope.io/embed/wWQXqSAi8jBaFgzcY92tjF"
+           data-poster="previews/samokat_bts_eclctica.jpg"
+           role="button" tabindex="0" aria-label="Воспроизвести видео">
+        <img class="video-poster" src="previews/samokat_bts_eclctica.jpg"
+             alt="" loading="lazy" draggable="false">
+        <span class="video-play" aria-hidden="true">
+          <svg viewBox="0 0 24 24">
+            <path d="M8.2 5.7c0-.9 1-1.45 1.8-.95l9.1 5.3c.8.47.8 1.62 0 2.1L10 17.45c-.8.5-1.8-.08-1.8-.95V5.7z"/>
+          </svg>
+        </span>
+      </div>
+      <figcaption class="video-caption">
+        <span>Бэкстейдж со съемок рекламы Самокат</span><span>2026</span>
+      </figcaption>
+    </figure>
 
-      <figure class="reveal">
-        <div style="position: relative; padding-top: 56.25%; width: 100%;">
-          <iframe 
-            src="https://kinescope.io/embed/iH9UN3zrRKGeSQS6Abgcuu" 
-            allow="autoplay; fullscreen; picture-in-picture; encrypted-media; gyroscope; accelerometer; clipboard-write; screen-wake-lock;" 
-            frameborder="0" 
-            allowfullscreen 
-            style="position: absolute; width: 100%; height: 100%; top: 0; left: 0;">
-          </iframe>
-        </div>
+    <figure class="reveal">
+      <div class="video-frame" style="padding-top:56.25%;"
+           data-video-src="https://kinescope.io/embed/xgz9KsWFhwzU9h2qby3tzo"
+           data-poster="previews/mmoma.jpg"
+           role="button" tabindex="0" aria-label="Воспроизвести видео">
+        <img class="video-poster" src="previews/mmoma.jpg"
+             alt="" loading="lazy" draggable="false">
+        <span class="video-play" aria-hidden="true">
+          <svg viewBox="0 0 24 24">
+            <path d="M8.2 5.7c0-.9 1-1.45 1.8-.95l9.1 5.3c.8.47.8 1.62 0 2.1L10 17.45c-.8.5-1.8-.08-1.8-.95V5.7z"/>
+          </svg>
+        </span>
+      </div>
+      <figcaption class="video-caption">
+        <span>Серия презентационных роликов с выставки в MMOMA</span><span>2025</span>
+      </figcaption>
+    </figure>
 
-        <figcaption class="video-caption">
-          <span>Имидживый ролик для UNIQOM</span>
-          <span>2025</span>
-        </figcaption>
-      </figure>
+    <figure class="reveal">
+      <div class="video-frame" style="padding-top:56.25%;"
+           data-video-src="https://kinescope.io/embed/emx984K6kHpPP9roMZffbg"
+           data-poster="previews/wethepro.jpg"
+           role="button" tabindex="0" aria-label="Воспроизвести видео">
+        <img class="video-poster" src="previews/wethepro.jpg"
+             alt="" loading="lazy" draggable="false">
+        <span class="video-play" aria-hidden="true">
+          <svg viewBox="0 0 24 24">
+            <path d="M8.2 5.7c0-.9 1-1.45 1.8-.95l9.1 5.3c.8.47.8 1.62 0 2.1L10 17.45c-.8.5-1.8-.08-1.8-.95V5.7z"/>
+          </svg>
+        </span>
+      </div>
+      <figcaption class="video-caption">
+        <span>Отчетник для WEAREPRO</span><span>2026</span>
+      </figcaption>
+    </figure>
 
-      <figure class="reveal">
-        <div style="position: relative; padding-top: 56.25%; width: 100%;">
-          <iframe 
-            src="https://kinescope.io/embed/8MUabsTDUpCE8xs35a9SPG" 
-            allow="autoplay; fullscreen; picture-in-picture; encrypted-media; gyroscope; accelerometer; clipboard-write; screen-wake-lock;" 
-            frameborder="0" 
-            allowfullscreen 
-            style="position: absolute; width: 100%; height: 100%; top: 0; left: 0;">
-          </iframe>
-        </div>
-        
-        <figcaption class="video-caption">
-          <span>Отчетник для IMARUSSIA x INVITRO</span>
-          <span>2026</span>
-        </figcaption>
-      </figure>
+  </div>
 
+  <!-- ВЕРТИКАЛЬНЫЕ -->
+  <div id="grid-vertical" class="grid-vertical grid-hidden">
 
+    <figure class="reveal">
+      <div class="video-frame ratio-9-16"
+           data-video-src="https://kinescope.io/embed/8qukDjCNQEkothEavp9Kre"
+           data-poster="previews/1.jpg"
+           role="button" tabindex="0" aria-label="Воспроизвести видео">
+        <img class="video-poster" src="previews/1.jpg"
+             alt="" loading="lazy" draggable="false">
+        <span class="video-play" aria-hidden="true">
+          <svg viewBox="0 0 24 24">
+            <path d="M8.2 5.7c0-.9 1-1.45 1.8-.95l9.1 5.3c.8.47.8 1.62 0 2.1L10 17.45c-.8.5-1.8-.08-1.8-.95V5.7z"/>
+          </svg>
+        </span>
+      </div>
+      <figcaption class="video-caption">
+        <span>Отчетник для ROLF</span><span>2025</span>
+      </figcaption>
+    </figure>
 
-      <figure class="reveal">
-        <div style="position: relative; padding-top: 56.25%; width: 100%;">
-          <iframe 
-            src="https://kinescope.io/embed/aeq4JN5dPnJJxs23J1JV1F" 
-            allow="autoplay; fullscreen; picture-in-picture; encrypted-media; gyroscope; accelerometer; clipboard-write; screen-wake-lock;" 
-            frameborder="0" 
-            allowfullscreen 
-            style="position: absolute; width: 100%; height: 100%; top: 0; left: 0;">
-          </iframe>
-        </div>
+    <figure class="reveal">
+      <div class="video-frame ratio-9-16"
+           data-video-src="https://kinescope.io/embed/rqaAzhjooZSc9Zjcejwo7c"
+           data-poster="previews/2.jpg"
+           role="button" tabindex="0" aria-label="Воспроизвести видео">
+        <img class="video-poster" src="previews/2.jpg"
+             alt="" loading="lazy" draggable="false">
+        <span class="video-play" aria-hidden="true">
+          <svg viewBox="0 0 24 24">
+            <path d="M8.2 5.7c0-.9 1-1.45 1.8-.95l9.1 5.3c.8.47.8 1.62 0 2.1L10 17.45c-.8.5-1.8-.08-1.8-.95V5.7z"/>
+          </svg>
+        </span>
+      </div>
+      <figcaption class="video-caption">
+        <span>Ролик для SETTERS x AVITO</span><span>2026</span>
+      </figcaption>
+    </figure>
 
-        <figcaption class="video-caption">
-          <span>Короткометражный фильм  "Замедление"</span>
-          <span>2024</span>
-        </figcaption>
-      </figure>
-      
-      <figure class="reveal">
-        <div style="position: relative; padding-top: 56.25%; width: 100%;">
-          <iframe 
-            src="https://kinescope.io/embed/wWQXqSAi8jBaFgzcY92tjF" 
-            allow="autoplay; fullscreen; picture-in-picture; encrypted-media; gyroscope; accelerometer; clipboard-write; screen-wake-lock;" 
-            frameborder="0" 
-            allowfullscreen 
-            style="position: absolute; width: 100%; height: 100%; top: 0; left: 0;">
-          </iframe>
-        </div>
-  
-        <figcaption class="video-caption">
-          <span>Бэкстейдж со съемок рекламы Самокат</span>
-          <span>2026</span>
-        </figcaption>
-      </figure>
+    <figure class="reveal">
+      <div class="video-frame ratio-9-16"
+           data-video-src="https://kinescope.io/embed/9yFHYGoRDts6dHhaaYBzfn"
+           data-poster="previews/3.jpg"
+           role="button" tabindex="0" aria-label="Воспроизвести видео">
+        <img class="video-poster" src="previews/3.jpg"
+             alt="" loading="lazy" draggable="false">
+        <span class="video-play" aria-hidden="true">
+          <svg viewBox="0 0 24 24">
+            <path d="M8.2 5.7c0-.9 1-1.45 1.8-.95l9.1 5.3c.8.47.8 1.62 0 2.1L10 17.45c-.8.5-1.8-.08-1.8-.95V5.7z"/>
+          </svg>
+        </span>
+      </div>
+      <figcaption class="video-caption">
+        <span>Отчетник</span><span>2026</span>
+      </figcaption>
+    </figure>
 
-      <figure class="reveal">
-        <div style="position: relative; padding-top: 56.25%; width: 100%;">
-          <iframe 
-            src="https://kinescope.io/embed/xgz9KsWFhwzU9h2qby3tzo" 
-            allow="autoplay; fullscreen; picture-in-picture; encrypted-media; gyroscope; accelerometer; clipboard-write; screen-wake-lock;" 
-            frameborder="0" 
-            allowfullscreen 
-            style="position: absolute; width: 100%; height: 100%; top: 0; left: 0;">
-          </iframe>
-        </div>
+    <figure class="reveal">
+      <div class="video-frame ratio-9-16"
+           data-video-src="https://kinescope.io/embed/tsd2UqJDbsPXTVGeJvX6fZ"
+           data-poster="previews/4.jpg"
+           role="button" tabindex="0" aria-label="Воспроизвести видео">
+        <img class="video-poster" src="previews/4.jpg"
+             alt="" loading="lazy" draggable="false">
+        <span class="video-play" aria-hidden="true">
+          <svg viewBox="0 0 24 24">
+            <path d="M8.2 5.7c0-.9 1-1.45 1.8-.95l9.1 5.3c.8.47.8 1.62 0 2.1L10 17.45c-.8.5-1.8-.08-1.8-.95V5.7z"/>
+          </svg>
+        </span>
+      </div>
+      <figcaption class="video-caption">
+        <span>Отчетник</span><span>2025</span>
+      </figcaption>
+    </figure>
 
-        <figcaption class="video-caption">
-          <span>Серия презентационных роликов с выставки в MMOMA</span>
-          <span>2025</span>
-        </figcaption>
-      </figure>
+  </div>
+</main>
 
+<!-- FOOTER -->
+<footer id="contacts" class="site-footer">
+  <div class="footer-divider"></div>
+  <h2 class="footer-title">КОНТАКТЫ</h2>
 
-      <figure class="reveal">
-        <div style="position: relative; padding-top: 56.25%; width: 100%;">
-          <iframe 
-            src="https://kinescope.io/embed/emx984K6kHpPP9roMZffbg" 
-            allow="autoplay; fullscreen; picture-in-picture; encrypted-media; gyroscope; accelerometer; clipboard-write; screen-wake-lock;" 
-            frameborder="0" 
-            allowfullscreen 
-            style="position: absolute; width: 100%; height: 100%; top: 0; left: 0;">
-          </iframe>
-        </div>
+  <div class="contacts-links">
+    <a href="https://t.me/tanerow" target="_blank" rel="noopener" class="nav-link">Telegram</a>
+    <a href="mailto:danilkaltashev@gmail.com" class="nav-link">Email</a>
+    <a href="https://instagram.com/danilkaltashev" target="_blank" rel="noopener" class="nav-link">Instagram</a>
+  </div>
 
-        <figcaption class="video-caption">
-          <span>Отчетник для WEAREPRO</span>
-          <span>2026</span>
-        </figcaption>
-      </figure>
+  <div class="footer-bottom">
+    <span>© 2026 Данил Калташев</span>
+    <span>Екатеринбург</span>
+  </div>
+</footer>
 
-    </div>
+<script>
+const tabHorizontal = document.getElementById('tab-horizontal');
+const tabVertical = document.getElementById('tab-vertical');
+const gridHorizontal = document.getElementById('grid-horizontal');
+const gridVertical = document.getElementById('grid-vertical');
+let isSwitching = false;
 
-    <div id="grid-vertical" class="grid-vertical grid-hidden">
+/* ПЕРЕКЛЮЧЕНИЕ СЕТКИ */
+function switchGrid(showEl, hideEl) {
+  if (isSwitching) return;
+  isSwitching = true;
 
-      <figure class="reveal">
-        <div class="ratio-9-16">
-          <iframe 
-            src="https://kinescope.io/embed/8qukDjCNQEkothEavp9Kre" 
-            allow="autoplay; fullscreen; picture-in-picture; encrypted-media; gyroscope; accelerometer; clipboard-write; screen-wake-lock;" 
-            frameborder="0" 
-            allowfullscreen 
-            style="position: absolute; width: 100%; height: 100%; top: 0; left: 0;">
-          </iframe>
-        </div>
-        
-        <figcaption class="video-caption">
-          <span>Отчетник для ROLF</span>
-          <span>2025</span>
-        </figcaption>
-      </figure>
+  hideEl.classList.add('grid-leaving');
 
-      <figure class="reveal">
-        <div class="ratio-9-16">
-          <iframe 
-            src="https://kinescope.io/embed/rqaAzhjooZSc9Zjcejwo7c" 
-            allow="autoplay; fullscreen; picture-in-picture; encrypted-media; gyroscope; accelerometer; clipboard-write; screen-wake-lock;" 
-            frameborder="0" 
-            allowfullscreen 
-            style="position: absolute; width: 100%; height: 100%; top: 0; left: 0;">
-          </iframe>
-        </div>
-        
-        <figcaption class="video-caption">
-          <span>Ролик для SETTERS x AVITO</span>
-          <span>2026</span>
-        </figcaption>
-      </figure>
+  setTimeout(() => {
+    hideEl.classList.add('grid-hidden');
+    hideEl.classList.remove('grid-leaving');
 
+    showEl.classList.remove('grid-hidden');
+    showEl.classList.add('grid-entering');
 
-      <figure class="reveal">
-        <div class="ratio-9-16">
-          <iframe 
-            src="https://kinescope.io/embed/9yFHYGoRDts6dHhaaYBzfn" 
-            allow="autoplay; fullscreen; picture-in-picture; encrypted-media; gyroscope; accelerometer; clipboard-write; screen-wake-lock;" 
-            frameborder="0" 
-            allowfullscreen 
-            style="position: absolute; width: 100%; height: 100%; top: 0; left: 0;">
-          </iframe>
-        </div>
-        
-        <figcaption class="video-caption">
-          <span>Отчетник</span>
-          <span>2026</span>
-        </figcaption>
-      </figure>
+    void showEl.offsetWidth;
 
-      <figure class="reveal">
-        <div class="ratio-9-16">
-          <iframe 
-            src="https://kinescope.io/embed/tsd2UqJDbsPXTVGeJvX6fZ" 
-            allow="autoplay; fullscreen; picture-in-picture; encrypted-media; gyroscope; accelerometer; clipboard-write; screen-wake-lock;" 
-            frameborder="0" 
-            allowfullscreen 
-            style="position: absolute; width: 100%; height: 100%; top: 0; left: 0;">
-          </iframe>
-        </div>
-        
-        <figcaption class="video-caption">
-          <span>Отчетник</span>
-          <span>2025</span>
-        </figcaption>
-      </figure>
-
-    </div>
-  </main>
-
-  <footer id="contacts" class="site-footer">
-    <div class="footer-divider"></div>
-    <h2 class="footer-title">КОНТАКТЫ</h2>
-
-    <div class="contacts-links">
-      <a href="https://t.me/tanerow" target="_blank" rel="noopener" class="nav-link">Telegram</a>
-      <a href="mailto:danilkaltashev@gmail.com" class="nav-link">Email</a>
-      <a href="https://instagram.com/danilkaltashev" target="_blank" rel="noopener" class="nav-link">Instagram</a>
-    </div>
-
-    <div class="footer-bottom">
-      <span>© 2026 Данил Калташев</span>
-      <span>Екатеринбург</span>
-    </div>
-  </footer>
-
-  <script>
-    const tabHorizontal = document.getElementById('tab-horizontal');
-    const tabVertical = document.getElementById('tab-vertical');
-    const gridHorizontal = document.getElementById('grid-horizontal');
-    const gridVertical = document.getElementById('grid-vertical');
-
-    const worksSection = document.getElementById('works');
-
-    let isSwitching = false;
-
-    function switchGrid(showEl, hideEl) {
-      if (isSwitching) return;
-      isSwitching = true;
-
-      hideEl.classList.add('grid-leaving');
-
-      setTimeout(() => {
-        hideEl.classList.add('grid-hidden');
-        hideEl.classList.remove('grid-leaving');
-
-        showEl.classList.remove('grid-hidden');
-        showEl.classList.add('grid-entering');
-
-        void showEl.offsetWidth; // форсируем перерасчёт стилей
-
-        requestAnimationFrame(() => {
-          showEl.classList.remove('grid-entering');
-          isSwitching = false;
-        });
-
-        checkReveal();
-      }, 120);
-    }
-
-    function showHorizontal() {
-      if (tabHorizontal.classList.contains('active')) return;
-
-      switchGrid(gridHorizontal, gridVertical);
-
-      tabHorizontal.classList.add('active');
-      tabHorizontal.classList.remove('inactive');
-      tabVertical.classList.add('inactive');
-      tabVertical.classList.remove('active');
-
-      tabHorizontal.setAttribute('aria-pressed', 'true');
-      tabVertical.setAttribute('aria-pressed', 'false');
-    }
-
-    function showVertical() {
-      if (tabVertical.classList.contains('active')) return;
-
-      switchGrid(gridVertical, gridHorizontal);
-
-      tabVertical.classList.add('active');
-      tabVertical.classList.remove('inactive');
-      tabHorizontal.classList.add('inactive');
-      tabHorizontal.classList.remove('active');
-
-      tabVertical.setAttribute('aria-pressed', 'true');
-      tabHorizontal.setAttribute('aria-pressed', 'false');
-    }
-
-    tabHorizontal.addEventListener('click', showHorizontal);
-    tabVertical.addEventListener('click', showVertical);
-
-    // Плавающее подчёркивание в хедере — скользит между "Работы" и "Контакты"
-    const navMenu = document.querySelector('.nav-menu');
-    const navIndicator = document.querySelector('.nav-indicator');
-    const navLinks = navMenu.querySelectorAll('.nav-link');
-
-    function moveIndicatorTo(el) {
-      const menuRect = navMenu.getBoundingClientRect();
-      const elRect = el.getBoundingClientRect();
-      navIndicator.style.left = (elRect.left - menuRect.left) + 'px';
-      navIndicator.style.width = elRect.width + 'px';
-      navIndicator.style.opacity = '1';
-    }
-
-    navLinks.forEach(link => {
-      link.addEventListener('mouseenter', () => moveIndicatorTo(link));
+    requestAnimationFrame(() => {
+      showEl.classList.remove('grid-entering');
+      isSwitching = false;
     });
 
-    navMenu.addEventListener('mouseleave', () => {
-      navIndicator.style.opacity = '0';
-    });
-
-    // Плавный скролл по клику на лого/навигацию без изменения URL
-    document.querySelectorAll('[data-scroll-target]').forEach(link => {
-      link.addEventListener('click', (e) => {
-        e.preventDefault();
-        const targetId = link.getAttribute('data-scroll-target');
-        if (targetId === 'top') {
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        } else {
-          const target = document.getElementById(targetId);
-          if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
-      });
-    });
-
-    // Появление карточек при скролле
-    const revealObserver = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('is-visible');
-          revealObserver.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.1, rootMargin: '0px 0px -20px 0px' });
-
-    function checkReveal() {
-      document.querySelectorAll('.reveal').forEach((el, i) => {
-        if (!el.classList.contains('is-visible')) {
-          el.style.transitionDelay = `${(i % 4) * 0.05}s`;
-          revealObserver.observe(el);
-        }
-      });
-    }
-
-    // Первая инициализация
     checkReveal();
-  </script>
+  }, 120);
+}
+
+function showHorizontal() {
+  if (tabHorizontal.classList.contains('active')) return;
+
+  switchGrid(gridHorizontal, gridVertical);
+
+  tabHorizontal.classList.add('active');
+  tabHorizontal.classList.remove('inactive');
+  tabVertical.classList.add('inactive');
+  tabVertical.classList.remove('active');
+
+  tabHorizontal.setAttribute('aria-pressed', 'true');
+  tabVertical.setAttribute('aria-pressed', 'false');
+}
+
+function showVertical() {
+  if (tabVertical.classList.contains('active')) return;
+
+  switchGrid(gridVertical, gridHorizontal);
+
+  tabVertical.classList.add('active');
+  tabVertical.classList.remove('inactive');
+  tabHorizontal.classList.add('inactive');
+  tabHorizontal.classList.remove('active');
+
+  tabVertical.setAttribute('aria-pressed', 'true');
+  tabHorizontal.setAttribute('aria-pressed', 'false');
+}
+
+tabHorizontal.addEventListener('click', showHorizontal);
+tabVertical.addEventListener('click', showVertical);
+
+/* ПОДЧЁРКИВАНИЕ В ХЕДЕРЕ */
+const navMenu = document.querySelector('.nav-menu');
+const navIndicator = document.querySelector('.nav-indicator');
+const navLinks = navMenu.querySelectorAll('.nav-link');
+
+function moveIndicatorTo(el) {
+  const menuRect = navMenu.getBoundingClientRect();
+  const elRect = el.getBoundingClientRect();
+
+  navIndicator.style.left = (elRect.left - menuRect.left) + 'px';
+  navIndicator.style.width = elRect.width + 'px';
+  navIndicator.style.opacity = '1';
+}
+
+navLinks.forEach(link => {
+  link.addEventListener('mouseenter', () => moveIndicatorTo(link));
+});
+
+navMenu.addEventListener('mouseleave', () => {
+  navIndicator.style.opacity = '0';
+});
+
+/* ПЛАВНЫЙ СКРОЛЛ */
+document.querySelectorAll('[data-scroll-target]').forEach(link => {
+  link.addEventListener('click', e => {
+    e.preventDefault();
+
+    const targetId = link.getAttribute('data-scroll-target');
+
+    if (targetId === 'top') {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    } else {
+      const target = document.getElementById(targetId);
+
+      if (target) {
+        target.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        });
+      }
+    }
+  });
+});
+
+/* ПОЯВЛЕНИЕ КАРТОЧЕК */
+const revealObserver = new IntersectionObserver(
+  entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-visible');
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  },
+  {
+    threshold: 0.1,
+    rootMargin: '0px 0px -20px 0px'
+  }
+);
+
+function checkReveal() {
+  document.querySelectorAll('.reveal').forEach((el, i) => {
+    if (!el.classList.contains('is-visible')) {
+      el.style.transitionDelay = `${(i % 4) * 0.05}s`;
+      revealObserver.observe(el);
+    }
+  });
+}
+
+/* ВИДЕО — KINESCOPE ТОЛЬКО ПО КЛИКУ */
+document.querySelectorAll('.video-frame[data-video-src]').forEach(frame => {
+  const poster = frame.querySelector('.video-poster');
+  const videoSrc = frame.dataset.videoSrc;
+
+  function playVideo() {
+    if (frame.classList.contains('is-playing')) return;
+
+    const iframe = document.createElement('iframe');
+
+    iframe.src = videoSrc + '?autoplay=1&no_poster=1';
+    iframe.allow =
+      'autoplay; fullscreen; picture-in-picture; encrypted-media; gyroscope; accelerometer; clipboard-write; screen-wake-lock;';
+    iframe.setAttribute('allowfullscreen', '');
+    iframe.setAttribute('frameborder', '0');
+    iframe.title = 'Видео';
+    iframe.loading = 'eager';
+
+    frame.classList.add('is-playing');
+    frame.appendChild(iframe);
+
+    if (poster) poster.remove();
+  }
+
+  frame.addEventListener('click', playVideo);
+
+  frame.addEventListener('keydown', event => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      playVideo();
+    }
+  });
+});
+
+/* ПЕРВАЯ ИНИЦИАЛИЗАЦИЯ */
+checkReveal();
+</script>
 
 </body>
 </html>
