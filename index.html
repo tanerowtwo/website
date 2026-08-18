@@ -237,8 +237,13 @@ figure { display: block; }
   pointer-events: none;
 }
 
-.video-frame:hover .video-poster { transform: scale(1.025); }
-.video-frame:hover::after { background: rgba(0,0,0,0.25); }
+.video-frame:not(.is-playing):hover .video-poster {
+  transform: scale(1.025);
+}
+
+.video-frame:not(.is-playing):hover::after {
+  background: rgba(0,0,0,0.25);
+}
 
 /* PLAY */
 .video-play {
